@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "11515416391",
+    "firebase_url": "https://drivezy-f13c2.firebaseio.com",
+    "project_id": "drivezy-f13c2",
+    "storage_bucket": "drivezy-f13c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:11515416391:android:46fc24efd9a08132",
+        "android_client_info": {
+          "package_name": "com.drivesmart.drivezyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "11515416391-ej8tsuuna88ihkeh9il2f74d0epssp03.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.drivesmart.drivezyapp",
+            "certificate_hash": "e74615e9028a2d0739381dc41046016df7e65221"
+          }
+        },
+        {
+          "client_id": "11515416391-6b4gg6pm0sfeshsudabslpsddhlg830h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBm4K3R_Pi3AW0mJvlfjGCezgylrbSMPtE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "11515416391-6b4gg6pm0sfeshsudabslpsddhlg830h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
