@@ -11,14 +11,14 @@ class AuthScreen extends StatefulWidget{
 
 class AuthScreenState extends State<AuthScreen>{
 
-
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   FirebaseUser _currentUser;
 
-  void _handleSignOut() {
-    _googleSignIn.disconnect();
+  Future<GoogleSignInAccount> _handleSignOut() async {
+    final GoogleSignInAccount googleUser = await _googleSignIn.disconnect();
+    return googleUser;
   }
 
   Future<FirebaseUser> _handleSignIn() async {
@@ -32,16 +32,27 @@ class AuthScreenState extends State<AuthScreen>{
 
     _currentUser = await _auth.signInWithCredential(credential);
     print("signed in " + _currentUser.displayName);
-    setState(() {
-
-    });
     return _currentUser;
   }
 
   void _signin() {
     _handleSignIn()
-        .then((FirebaseUser user) => print(user))
-        .catchError((e) => print(e));
+        .then((FirebaseUser user){
+          print(user);
+          setState(() {
+
+          });
+    }).catchError((e) => print(e));
+  }
+
+  void _signout() {
+    _handleSignOut().then((GoogleSignInAccount user){
+      print(user);
+      _currentUser = null;
+      setState(() {
+
+      });
+    }).catchError((e) => print(e));
   }
 
   Widget _buildBody() {
@@ -58,7 +69,7 @@ class AuthScreenState extends State<AuthScreen>{
           Text(_currentUser.displayName),
           RaisedButton(
             child: const Text('SIGN OUT'),
-            onPressed: _handleSignOut,
+            onPressed: _signout,
           ),
         ],
       );
@@ -69,7 +80,7 @@ class AuthScreenState extends State<AuthScreen>{
           const Text("You are not currently signed in."),
           RaisedButton(
             child: const Text('SIGN IN'),
-            onPressed: _handleSignIn,
+            onPressed: _signin,
           ),
         ],
       );
@@ -80,7 +91,7 @@ class AuthScreenState extends State<AuthScreen>{
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Google Sign In'),
+          title: const Text('Login'),
         ),
         body: ConstrainedBox(
           constraints: const BoxConstraints.expand(),
