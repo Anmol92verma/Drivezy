@@ -1,4 +1,4 @@
-import 'package:drivezy_app/ui/splash/SplashPage.dart';
+import 'package:drivezy_app/ui/routes/auth.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(DrivezyApp());
@@ -22,7 +22,7 @@ class DrivezyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: SplashPage(),
+      home: AuthScreen(),
     );
   }
 }
