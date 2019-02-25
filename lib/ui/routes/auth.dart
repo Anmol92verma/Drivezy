@@ -97,7 +97,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   // Styling
 
-  final decorationStyle = TextStyle(color: Colors.grey[50], fontSize: 16.0);
+  final decorationStyle = TextStyle(color: Colors.white24, fontSize: 16.0);
   final hintStyle = TextStyle(color: Colors.white24);
 
   //
@@ -176,7 +176,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   String get phoneNumber {
     String unmaskedText = _maskedPhoneKey.currentState.unmaskedText;
-    String formatted = "+55$unmaskedText".trim();
+    String formatted = "+91$unmaskedText".trim();
     return formatted;
   }
 
@@ -298,11 +298,10 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Widget _buildConfirmInputButton() {
-    final theme = Theme.of(context);
     return IconButton(
       icon: Icon(Icons.check),
-      color: theme.accentColor,
-      disabledColor: theme.buttonColor,
+      color: Colors.white,
+      disabledColor: Colors.white24,
       onPressed: (this.status == AuthStatus.PROFILE_AUTH)
           ? null
           : () => _updateRefreshing(true),
@@ -315,7 +314,6 @@ class _AuthScreenState extends State<AuthScreen> {
       mask: "(xx) xxxxx-xxxx",
       keyboardType: TextInputType.number,
       maskedTextFieldController: phoneNumberController,
-      maxLength: 15,
       onSubmitted: (text) => _updateRefreshing(true),
       style: Theme
           .of(context)
@@ -454,8 +452,6 @@ class _AuthScreenState extends State<AuthScreen> {
   String _phoneInputValidator() {
     if (phoneNumberController.text.isEmpty) {
       return "Your phone number can't be empty!";
-    } else if (phoneNumberController.text.length < 15) {
-      return "This phone number is invalid!";
     }
     return null;
   }
