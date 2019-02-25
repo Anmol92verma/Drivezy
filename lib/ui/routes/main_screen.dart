@@ -96,6 +96,15 @@ class MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           ),
           layers: [
             new EsriBasemapOptions(esriBasemapType: EsriBasemapType.streets),
+            new MarkerLayerOptions(markers: [
+              new Marker(
+                width: 50.0,
+                height: 50.0,
+                point: newLocation,
+                builder: (ctx) =>
+                new Container(child: new CircleAvatar(backgroundImage: NetworkImage(this.googleUser.photoUrl))),
+              )
+            ])
           ],
         ),
       ),
