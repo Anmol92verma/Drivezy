@@ -25,12 +25,37 @@ class MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   final GoogleSignInAccount googleUser;
   final FirebaseUser firebaseUser;
   MapController mapController;
-
+  Animation<double> _animateIcon;
+  AnimationController _animationController;
+  bool isOpened = false;
   MainScreenState({@required this.googleUser, @required this.firebaseUser});
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void initState() {
     super.initState();
     mapController = new MapController();
+
+    _animationController =
+    AnimationController(vsync: this, duration: Duration(milliseconds: 500))
+      ..addListener(() {
+        setState(() {});
+      });
+    _animateIcon = Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
+  }
+
+  animate() {
+    if (!isOpened) {
+      _animationController.forward();
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(content: Text("Starting Location Updates..."),duration: Duration(milliseconds: 500),),
+      );
+    } else {
+      _animationController.reverse();
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(content: Text("Stopping Location Updates..."),duration: Duration(milliseconds: 500)),
+      );
+    }
+    isOpened = !isOpened;
   }
 
   void _animatedMapMove(LatLng destLocation, double destZoom) {
@@ -41,7 +66,7 @@ class MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     final _lngTween = new Tween<double>(
         begin: mapController.center.longitude, end: destLocation.longitude);
     final _zoomTween =
-    new Tween<double>(begin: mapController.zoom, end: destZoom);
+        new Tween<double>(begin: mapController.zoom, end: destZoom);
 
     // Create a new animation controller that has a duration and a TickerProvider.
     AnimationController controller = AnimationController(
@@ -49,7 +74,7 @@ class MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     // The animation determines what path the animation will take. You can try different Curves values, although I found
     // fastOutSlowIn to be my favorite.
     Animation<double> animation =
-    CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+        CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
     controller.addListener(() {
       // Note that the mapController.move doesn't seem to like the zoom animation. This may be a bug in flutter_map.
@@ -74,6 +99,17 @@ class MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     initLocation();
     return Scaffold(
+      key: _scaffoldKey,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          animate();
+        },
+        child: AnimatedIcon(
+          icon: AnimatedIcons.play_pause,
+          progress: _animateIcon,
+        ),
+        mini: true,
+      ),
       appBar: AppBar(
         elevation: 4.0,
         leading: Padding(
@@ -101,8 +137,10 @@ class MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                 width: 50.0,
                 height: 50.0,
                 point: newLocation,
-                builder: (ctx) =>
-                new Container(child: new CircleAvatar(backgroundImage: NetworkImage(this.googleUser.photoUrl))),
+                builder: (ctx) => new Container(
+                    child: new CircleAvatar(
+                        backgroundImage:
+                            NetworkImage(this.googleUser.photoUrl))),
               )
             ])
           ],
@@ -118,7 +156,7 @@ class MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         handleNewLocation(currentLocation);
       });
 
-      location.getLocation().then((LocationData currentLocation){
+      location.getLocation().then((LocationData currentLocation) {
         handleNewLocation(currentLocation);
       });
     }
@@ -131,7 +169,8 @@ class MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     print(currentLocation.altitude);
     print(currentLocation.speed);
     print(currentLocation.speedAccuracy); // Will always be 0 on iOS
-    newLocation = new LatLng(currentLocation.latitude, currentLocation.longitude);
+    newLocation =
+        new LatLng(currentLocation.latitude, currentLocation.longitude);
     _animatedMapMove(newLocation, 17);
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:drivezy_app/logger.dart';
+import 'package:drivezy_app/ui/routes/google_auth.dart';
 import 'package:drivezy_app/ui/routes/main_screen.dart';
 import 'package:drivezy_app/ui/widgets/google_sign_in_btn.dart';
 import 'package:drivezy_app/ui/widgets/masked_text.dart';
@@ -9,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
 enum AuthStatus { SOCIAL_AUTH, PHONE_AUTH, SMS_AUTH, PROFILE_AUTH }
 
 class AuthScreen extends StatefulWidget {
@@ -44,6 +46,12 @@ class _AuthScreenState extends State<AuthScreen> {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   GoogleSignInAccount _googleUser;
+
+  @override
+  initState() {
+    super.initState();
+    Auth.init();
+  }
 
   // PhoneVerificationCompleted
   verificationCompleted(FirebaseUser user) async {
@@ -213,13 +221,9 @@ class _AuthScreenState extends State<AuthScreen> {
   Future<void> _signInWithPhoneNumber() async {
     final errorMessage = "We couldn't verify your code, please try again!";
     final AuthCredential credential = PhoneAuthProvider.getCredential(
-        verificationId: _verificationId, smsCode: smsCodeController.text
-    );
+        verificationId: _verificationId, smsCode: smsCodeController.text);
 
-
-    await _auth
-        .signInWithCredential(credential)
-        .then((user) async {
+    await _auth.signInWithCredential(credential).then((user) async {
       await _onCodeVerified(user).then((codeVerified) async {
         this._codeVerified = codeVerified;
         Logger.log(
@@ -263,13 +267,7 @@ class _AuthScreenState extends State<AuthScreen> {
         // Google and phone number methods
         // Example: authenticate with your own API, use the data gathered
         // to post your profile/user, etc.
-
-        Navigator.of(context).pushReplacement(CupertinoPageRoute(
-              builder: (context) => MainScreen(
-                    googleUser: _googleUser,
-                    firebaseUser: user,
-                  ),
-            ));
+        navigateForFirebaseUser(user);
       } else {
         setState(() {
           this.status = AuthStatus.SMS_AUTH;
@@ -315,8 +313,7 @@ class _AuthScreenState extends State<AuthScreen> {
       keyboardType: TextInputType.number,
       maskedTextFieldController: phoneNumberController,
       onSubmitted: (text) => _updateRefreshing(true),
-      style: Theme
-          .of(context)
+      style: Theme.of(context)
           .textTheme
           .subhead
           .copyWith(fontSize: 18.0, color: Colors.white),
@@ -512,5 +509,14 @@ class _AuthScreenState extends State<AuthScreen> {
         ),
       ),
     );
+  }
+
+  void navigateForFirebaseUser(FirebaseUser user) {
+    Navigator.of(context).pushReplacement(CupertinoPageRoute(
+      builder: (context) => MainScreen(
+            googleUser: _googleUser,
+            firebaseUser: user,
+          ),
+    ));
   }
 }
