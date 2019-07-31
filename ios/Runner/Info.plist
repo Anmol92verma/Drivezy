@@ -24,7 +24,7 @@
 	<string>Editor</string>
 	<key>CFBundleURLSchemes</key>
 	<array>
-		<string>***Something here***</string>
+		<string>com.googleusercontent.apps.744310641628-d00v949rtsj6q09hapj2ebliu56e3uan</string>
 	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
@@ -33,7 +33,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.11515416391-0c5t48q7kk3jes96lkr0rbafvtllfuui</string>
+				<string>com.googleusercontent.apps.744310641628-d00v949rtsj6q09hapj2ebliu56e3uan</string>
 			</array>
 		</dict>
 	</array>

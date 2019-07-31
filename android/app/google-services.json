@@ -1,52 +1,45 @@
 {
   "project_info": {
-    "project_number": "11515416391",
-    "firebase_url": "https://drivezy-f13c2.firebaseio.com",
-    "project_id": "drivezy-f13c2",
-    "storage_bucket": "drivezy-f13c2.appspot.com"
+    "project_number": "744310641628",
+    "firebase_url": "https://jupiter-247011.firebaseio.com",
+    "project_id": "jupiter-247011",
+    "storage_bucket": "jupiter-247011.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:11515416391:android:46fc24efd9a08132",
+        "mobilesdk_app_id": "1:744310641628:android:46fc24efd9a08132",
         "android_client_info": {
           "package_name": "com.drivesmart.drivezyapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "11515416391-ej8tsuuna88ihkeh9il2f74d0epssp03.apps.googleusercontent.com",
+          "client_id": "744310641628-8ce2v61cok2h5ad3a047gdn64022fhck.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.drivesmart.drivezyapp",
-            "certificate_hash": "e74615e9028a2d0739381dc41046016df7e65221"
+            "certificate_hash": "a0ce238ad613793bfd4ed961490397c8d823421e"
           }
         },
         {
-          "client_id": "11515416391-6b4gg6pm0sfeshsudabslpsddhlg830h.apps.googleusercontent.com",
+          "client_id": "744310641628-rrct5irfro1tultdk7d8a5k4m9qiv252.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBm4K3R_Pi3AW0mJvlfjGCezgylrbSMPtE"
+          "current_key": "AIzaSyBHpm4s2mvMleN-nw2tmitP20hZZDcJf88"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "11515416391-6b4gg6pm0sfeshsudabslpsddhlg830h.apps.googleusercontent.com",
+              "client_id": "744310641628-rrct5irfro1tultdk7d8a5k4m9qiv252.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

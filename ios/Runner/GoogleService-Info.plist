@@ -2,39 +2,37 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
-	<string>ca-app-pub-3940256099942544/2934735716</string>
-	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
-	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>11515416391-0c5t48q7kk3jes96lkr0rbafvtllfuui.apps.googleusercontent.com</string>
+	<string>744310641628-d00v949rtsj6q09hapj2ebliu56e3uan.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.11515416391-0c5t48q7kk3jes96lkr0rbafvtllfuui</string>
+	<string>com.googleusercontent.apps.744310641628-d00v949rtsj6q09hapj2ebliu56e3uan</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>744310641628-8ce2v61cok2h5ad3a047gdn64022fhck.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAHAsXvHCR9wUcA6bf9xZvuaLxx8BmxgNo</string>
+	<string>AIzaSyAeztT3275klQdKetvO6LATmF2xh269RtY</string>
 	<key>GCM_SENDER_ID</key>
-	<string>11515416391</string>
+	<string>744310641628</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.drivesmart.drivezyApp</string>
 	<key>PROJECT_ID</key>
-	<string>drivezy-f13c2</string>
+	<string>jupiter-247011</string>
 	<key>STORAGE_BUCKET</key>
-	<string>drivezy-f13c2.appspot.com</string>
+	<string>jupiter-247011.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<true></true>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
 	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<false></false>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
 	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:11515416391:ios:1f92bdb8db5ed391</string>
+	<string>1:744310641628:ios:1f92bdb8db5ed391</string>
 	<key>DATABASE_URL</key>
-	<string>https://drivezy-f13c2.firebaseio.com</string>
+	<string>https://jupiter-247011.firebaseio.com</string>
 </dict>
 </plist>

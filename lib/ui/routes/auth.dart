@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:drivezy_app/logger.dart';
-import 'package:drivezy_app/ui/routes/google_auth.dart';
 import 'package:drivezy_app/ui/routes/main_screen.dart';
 import 'package:drivezy_app/ui/widgets/google_sign_in_btn.dart';
 import 'package:drivezy_app/ui/widgets/masked_text.dart';
@@ -50,11 +49,11 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   initState() {
     super.initState();
-    Auth.init();
   }
 
   // PhoneVerificationCompleted
-  verificationCompleted(FirebaseUser user) async {
+  verificationCompleted(AuthCredential authCredential) async {
+    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
     Logger.log(TAG, message: "onVerificationCompleted, user: $user");
     if (await _onCodeVerified(user)) {
       await _finishSignIn(user);
@@ -190,13 +189,12 @@ class _AuthScreenState extends State<AuthScreen> {
 
   Future<Null> _verifyPhoneNumber() async {
     Logger.log(TAG, message: "Got phone number as: ${this.phoneNumber}");
-    await _auth.verifyPhoneNumber(
-        phoneNumber: this.phoneNumber,
+    await _auth.verifyPhoneNumber(phoneNumber: this.phoneNumber,
         timeout: _timeOut,
-        codeSent: codeSent,
-        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
         verificationCompleted: verificationCompleted,
-        verificationFailed: verificationFailed);
+        verificationFailed: null,
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
     Logger.log(TAG, message: "Returning null from _verifyPhoneNumber");
     return null;
   }
@@ -224,6 +222,8 @@ class _AuthScreenState extends State<AuthScreen> {
         verificationId: _verificationId, smsCode: smsCodeController.text);
 
     await _auth.signInWithCredential(credential).then((user) async {
+      final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+
       await _onCodeVerified(user).then((codeVerified) async {
         this._codeVerified = codeVerified;
         Logger.log(

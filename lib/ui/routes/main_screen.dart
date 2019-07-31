@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drivezy_app/utils/app_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_esri/flutter_map_esri.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -28,31 +31,41 @@ class MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   Animation<double> _animateIcon;
   AnimationController _animationController;
   bool isOpened = false;
+
   MainScreenState({@required this.googleUser, @required this.firebaseUser});
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void initState() {
     super.initState();
     mapController = new MapController();
-
+    this.setState(() {});
     _animationController =
-    AnimationController(vsync: this, duration: Duration(milliseconds: 500))
-      ..addListener(() {
-        setState(() {});
-      });
-    _animateIcon = Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500))
+          ..addListener(() {
+            setState(() {
+              print("location updating");
+            });
+          });
+    _animateIcon =
+        Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
   }
 
   animate() {
-    if (!isOpened) {
-      _animationController.forward();
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(content: Text("Starting Location Updates..."),duration: Duration(milliseconds: 500),),
-      );
-    } else {
+    if (isOpened) {
       _animationController.reverse();
       _scaffoldKey.currentState.showSnackBar(
-        SnackBar(content: Text("Stopping Location Updates..."),duration: Duration(milliseconds: 500)),
+        SnackBar(
+            content: Text("Stopping Location Updates..."),
+            duration: Duration(milliseconds: 500)),
+      );
+    } else {
+      _animationController.forward();
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(
+          content: Text("Starting Location Updates..."),
+          duration: Duration(milliseconds: 500),
+        ),
       );
     }
     isOpened = !isOpened;
@@ -149,16 +162,30 @@ class MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     );
   }
 
-  void initLocation() {
+  void initLocation() async {
     if (location == null) {
       location = Location();
-      location.onLocationChanged().listen((LocationData currentLocation) {
-        handleNewLocation(currentLocation);
+      location.onLocationChanged().listen((locationData) {
+        print("DataReceived: " + locationData.toString());
+        handleNewLocation(locationData);
+      }, onDone: () {
+        print("Task Done");
+      }, onError: (error) {
+        print("Some Error");
+        if (error.code == 'PERMISSION_DENIED') {
+          print('Permission denied');
+        }
       });
 
-      location.getLocation().then((LocationData currentLocation) {
+      // Platform messages may fail, so we use a try/catch PlatformException.
+      try {
+        var currentLocation = await location.getLocation();
         handleNewLocation(currentLocation);
-      });
+      } on PlatformException catch (e) {
+        if (e.code == 'PERMISSION_DENIED') {
+          print('Permission denied');
+        }
+      }
     }
   }
 
@@ -169,8 +196,29 @@ class MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     print(currentLocation.altitude);
     print(currentLocation.speed);
     print(currentLocation.speedAccuracy); // Will always be 0 on iOS
+    print("heading "+currentLocation.heading.toString());
     newLocation =
         new LatLng(currentLocation.latitude, currentLocation.longitude);
     _animatedMapMove(newLocation, 17);
+    if(isOpened){
+      updateLocation(newLocation);
+    }
+    setState(() {
+      print("location updating");
+    });
+  }
+
+  Map<String, String> prepareLocationModel(LatLng newLocation) {
+    return {
+      "latitude": newLocation.latitude.toString(),
+      "longitude": newLocation.longitude.toString()
+    };
+  }
+
+  void updateLocation(LatLng newLocation) async {
+    await Firestore.instance
+        .collection(AppConstants.FIRE_STORE_COLLECTION_LOCATION)
+        .document(firebaseUser.phoneNumber)
+        .setData(prepareLocationModel(newLocation));
   }
 }
